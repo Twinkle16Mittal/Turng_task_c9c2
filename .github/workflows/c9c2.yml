@@ -8,18 +8,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      VAR2: ${{ steps.set-vars.outputs.VAR2 }}
     steps:
-      - name: Set up variables
-        run: |
-          export VAR1=value1
-          export VAR2=${VAR1}-suffix
-          echo "VAR2=$VAR2" >> $GITHUB_ENV
-      - name: Use VAR2
-        run: echo "VAR2 is $VAR2"
+      - id: set-vars
+        run: echo "::set-output name=VAR2::${{ env.VAR1 }}-suffix"
         env:
-          VAR2: ${{ env.VAR2 }}
+          VAR1: value1
+      - name: Use VAR2
+        run: echo "VAR2 is ${{ needs.build.outputs.VAR2 }}"
 
-          echo "GREETING: $GREETING"
 
 
 
