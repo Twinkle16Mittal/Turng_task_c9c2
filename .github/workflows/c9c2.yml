@@ -1,29 +1,30 @@
 name: Example Workflow
 
-on: 
-  push: 
-    branches: 
-      - main  
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  example-job:
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      VAR2: ${{ steps.set-var2.outputs.VAR2 }}
+
     env:
       VAR1: "Hello"
-    steps:
-    - id: set-var2
-      run: echo "::set-output name=VAR2::${VAR1} World"
-    - name: Echo VAR2
-      run: echo ${{ steps.set-var2.outputs.VAR2 }}
+      VAR2: "${{ secrets.MY_SECRET }}"
+      # Using VAR1 to set another environment variable
+      GREETING: "${{ env.VAR1 }}, World"
 
-  another-job:
-    needs: example-job
-    runs-on: ubuntu-latest
     steps:
-    - name: Echo VAR2 from previous job
-      run: echo ${{ needs.example-job.outputs.VAR2 }}
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Print environment variables
+        run: |
+          echo "VAR1: $VAR1"
+          echo "VAR2: $VAR2"
+          echo "GREETING: $GREETING"
+
 
 
 
