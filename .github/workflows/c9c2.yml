@@ -6,14 +6,15 @@ on:
       - main  
 
 jobs:
-  example:
+  example-job:
     runs-on: ubuntu-latest
     env:
-      BASE_URL: "https://example.com"
+      VAR1: "Hello"
     steps:
-      - name: Define FULL_URL
-        env:
-          FULL_URL: ${{ env.BASE_URL }}/path
-        run: echo $FULL_URL
+    - name: Set VAR2
+      run: echo "VAR2=${VAR1} World" >> $GITHUB_ENV
+    - name: Echo VAR2
+      run: echo $VAR2  # This will output "Hello World"
+
 
 
