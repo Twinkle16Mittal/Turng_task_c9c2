@@ -6,14 +6,17 @@ on:
       - main
 
 jobs:
-  example_job:
+  example-job:
     runs-on: ubuntu-latest
     env:
-      VAR_ONE: "value1"
+      FIRST_VAR: "value1"
     steps:
-      - name: Step with variables
+      - name: Define dependent environment variable
+        run: echo "SECOND_VAR=${FIRST_VAR}_suffix" >> $GITHUB_ENV
+
+      - name: Use the environment variables
         run: |
-          VAR_TWO="This will work: $VAR_ONE"  # Expands during execution
-          echo "VAR_TWO=$VAR_TWO" >> $GITHUB_ENV
+          echo "First variable is $FIRST_VAR"
+          echo "Second variable is $SECOND_VAR"
 
 
