@@ -5,18 +5,9 @@ on:
     branches: 
       - main
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    outputs:
-      VAR2: ${{ steps.set-vars.outputs.VAR2 }}
-    steps:
-      - id: set-vars
-        run: echo "::set-output name=VAR2::${{ env.VAR1 }}-suffix"
-        env:
-          VAR1: value1
-      - name: Use VAR2
-        run: echo "VAR2 is ${{ needs.build.outputs.VAR2 }}"
+vars:
+  VAR1: value1
+  VAR2: "${{ vars.VAR1 }}-suffix"
 
 
 
