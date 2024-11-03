@@ -1,28 +1,24 @@
 name: Example Workflow
 
-on:
-  push:
-    branches:
+on: 
+  push: 
+    branches: 
       - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    env:
-      VAR1: "Hello"
-      VAR2: "${{ secrets.MY_SECRET }}"
-      # Using VAR1 to set another environment variable
-      GREETING: "${{ env.VAR1 }}, World"
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Print environment variables
+      - name: Set up variables
         run: |
-          echo "VAR1: $VAR1"
-          echo "VAR2: $VAR2"
+          export VAR1=value1
+          export VAR2=${VAR1}-suffix
+          echo "VAR2=$VAR2" >> $GITHUB_ENV
+      - name: Use VAR2
+        run: echo "VAR2 is $VAR2"
+        env:
+          VAR2: ${{ env.VAR2 }}
+
           echo "GREETING: $GREETING"
 
 
