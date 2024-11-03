@@ -5,12 +5,15 @@ on:
     branches: 
       - main
 
-vars:
-  VAR1: value1
-  VAR2: "${{ vars.VAR1 }}-suffix"
-
-
-
-
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    env:
+      VAR_ONE: "value1"
+    steps:
+      - name: Step with variables
+        run: |
+          VAR_TWO="This will work: $VAR_ONE"  # Expands during execution
+          echo "VAR_TWO=$VAR_TWO" >> $GITHUB_ENV
 
 
